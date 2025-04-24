@@ -72,7 +72,7 @@ export default async function Home() {
                     <img
                       alt="Mental Health Support"
                       className="aspect-video w-full object-cover object-center"
-                      src="/placeholder.svg?height=550&width=800"
+                      src="/Image_1.png?height=550&width=800"
                     />
                     <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-6">
                       <p className="text-white font-medium">Start your journey to better mental health today</p>
@@ -284,10 +284,10 @@ export default async function Home() {
                 <div className="relative w-full max-w-md">
                   <div className="absolute -inset-1 bg-gradient-to-r from-secondary to-accent rounded-2xl blur opacity-30 animate-pulse-slow"></div>
                   <div className="relative bg-white dark:bg-gray-900 rounded-2xl shadow-xl overflow-hidden">
-                    <img
+                  <img
                       alt="Mental Health Support"
-                      className="aspect-square w-full object-cover object-center"
-                      src="/placeholder.svg?height=600&width=600"
+                      className="aspect-video w-full object-cover object-center"
+                      src="/Image_2.png?height=550&width=800"
                     />
                   </div>
                   <div className="absolute -top-4 -left-4 w-24 h-24 bg-primary/20 rounded-full blur-xl animate-pulse-slow"></div>
@@ -416,11 +416,7 @@ export default async function Home() {
                       Terms
                     </Link>
                   </li>
-                  <li>
-                    <Link href="/cookies" className="text-muted-foreground hover:text-foreground">
-                      Cookies
-                    </Link>
-                  </li>
+                
                 </ul>
               </div>
               <div className="space-y-3">
@@ -433,7 +429,7 @@ export default async function Home() {
                   </li>
                   <li className="text-muted-foreground">
                     <a href="tel:+1234567890" className="hover:text-foreground">
-                      +1 (234) 567-890
+                      +91 (234) 567-890
                     </a>
                   </li>
                 </ul>

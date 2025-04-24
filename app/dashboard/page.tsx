@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import Link from "next/link"
 import { getEmergencyContact } from "@/lib/db-utils"
-
+import { DailyQuizCard } from '@/components/DailyQuizCard'
 export default async function DashboardPage() {
   const user = await currentUser()
 
@@ -163,86 +163,28 @@ export default async function DashboardPage() {
           </Card>
         </div>
 
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {/* Chat with AI card */}
+          {/* Resources card */}
+          {/* Journal card */}
+          {/* ... all those cards you already had ... */}
+        </div>
+
+        {/* Progress Card */}
         <div className="mt-12">
           <Card className="overflow-hidden border-0 shadow-lg">
-            <div className="bg-gradient-to-r from-primary to-secondary p-6 text-white">
-              <h3 className="text-xl font-bold">Daily Wellness Tip</h3>
-              <p className="mt-2 opacity-90">
-                Taking just 5 minutes for mindful breathing can significantly reduce stress and improve focus.
-              </p>
-            </div>
-            <CardContent className="p-6">
-              <div className="flex flex-col md:flex-row gap-6 items-center">
-                <div className="w-full md:w-2/3">
-                  <h4 className="text-lg font-medium mb-2">Your Progress</h4>
-                  <p className="text-muted-foreground mb-4">
-                    Tracking your mental health journey helps identify patterns and improvements over time.
-                  </p>
-                  <div className="space-y-4">
-                    <div>
-                      <div className="flex justify-between mb-1">
-                        <span className="text-sm font-medium">Mood Tracking</span>
-                        <span className="text-sm font-medium">60%</span>
-                      </div>
-                      <div className="w-full bg-muted rounded-full h-2.5">
-                        <div className="bg-primary h-2.5 rounded-full" style={{ width: "60%" }}></div>
-                      </div>
-                    </div>
-                    <div>
-                      <div className="flex justify-between mb-1">
-                        <span className="text-sm font-medium">Journal Entries</span>
-                        <span className="text-sm font-medium">25%</span>
-                      </div>
-                      <div className="w-full bg-muted rounded-full h-2.5">
-                        <div className="bg-secondary h-2.5 rounded-full" style={{ width: "25%" }}></div>
-                      </div>
-                    </div>
-                    <div>
-                      <div className="flex justify-between mb-1">
-                        <span className="text-sm font-medium">Resource Utilization</span>
-                        <span className="text-sm font-medium">45%</span>
-                      </div>
-                      <div className="w-full bg-muted rounded-full h-2.5">
-                        <div className="bg-accent h-2.5 rounded-full" style={{ width: "45%" }}></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="w-full md:w-1/3 flex justify-center">
-                  <div className="relative w-40 h-40">
-                    <div className="absolute inset-0 rounded-full bg-primary/10 animate-pulse-slow"></div>
-                    <div
-                      className="absolute inset-2 rounded-full bg-secondary/10 animate-pulse-slow"
-                      style={{ animationDelay: "1s" }}
-                    ></div>
-                    <div
-                      className="absolute inset-4 rounded-full bg-accent/10 animate-pulse-slow"
-                      style={{ animationDelay: "2s" }}
-                    ></div>
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="text-center">
-                        <div className="text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                          43%
-                        </div>
-                        <div className="text-sm text-muted-foreground">Overall Progress</div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-            <CardFooter className="bg-muted/50 px-6 py-4">
-              <div className="flex justify-between items-center w-full">
-                <p className="text-sm text-muted-foreground">Last updated: {new Date().toLocaleDateString()}</p>
-                <Button variant="ghost" size="sm" className="text-primary">
-                  View Details
-                </Button>
-              </div>
-            </CardFooter>
+            {/* ... progress content ... */}
           </Card>
         </div>
+
+        {/* ✅ Daily Quiz Card */}
+        <div className="mt-12">
+          <DailyQuizCard />
+        </div>
       </DashboardShell>
+      
     </div>
+    
   )
 }
 

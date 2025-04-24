@@ -31,6 +31,7 @@ export default function ChatPage() {
     },
   ])
   const [isLoading, setIsLoading] = useState(false)
+  const [crisisFlag, setCrisisFlag] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
   const scrollToBottom = () => {
@@ -42,11 +43,11 @@ export default function ChatPage() {
   }, [messages])
 
   const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
+    e.preventDefault()
 
-    if (!input.trim()) return;
+    if (!input.trim()) return
 
-    const userMessage = input;
+    const userMessage = input
     setMessages((prev) => [
       ...prev,
       {
@@ -55,9 +56,9 @@ export default function ChatPage() {
         content: userMessage,
         timestamp: new Date(),
       },
-    ]);
-    setInput("");
-    setIsLoading(true);
+    ])
+    setInput("")
+    setIsLoading(true)
 
     try {
       const response = await fetch("/api/chat", {
@@ -66,22 +67,26 @@ export default function ChatPage() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ message: userMessage }),
-      });
+      })
 
-      
       if (!response.ok) {
-        const contentType = response.headers.get("content-type");
+        const contentType = response.headers.get("content-type")
         if (contentType && contentType.includes("application/json")) {
-          const errorDetails = await response.json();
-          throw new Error(errorDetails.error || "Failed to fetch AI response");
+          const errorDetails = await response.json()
+          throw new Error(errorDetails.error || "Failed to fetch AI response")
         } else {
-          const errorText = await response.text();
-          throw new Error(errorText || "Unexpected response from server");
+          const errorText = await response.text()
+          throw new Error(errorText || "Unexpected response from server")
         }
       }
 
-      const result = await response.json();
-      const aiReply = result.message;
+      const result = await response.json()
+      const aiReply = result.message
+      const crisisDetected = result.crisisDetected
+
+      if (crisisDetected) {
+        setCrisisFlag(true)
+      }
 
       setMessages((prev) => [
         ...prev,
@@ -91,25 +96,24 @@ export default function ChatPage() {
           content: aiReply,
           timestamp: new Date(),
         },
-      ]);
+      ])
     } catch (error: any) {
-      console.error("❌ Error sending message:", error);
+      console.error("❌ Error sending message:", error)
       toast({
         title: "Error",
         description: error?.message || "Failed to send message. Please try again.",
         variant: "destructive",
-      });
+      })
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  };
+  }
 
   if (!user) return null
 
   return (
     <div className="flex min-h-screen flex-col">
       <DashboardHeader user={user as any} />
-
       <DashboardShell className="flex-1 flex flex-col pattern-bg">
         <div className="mb-6">
           <h1 className="text-3xl font-bold tracking-tight, text-black dark:text-gray-800">
@@ -123,25 +127,40 @@ export default function ChatPage() {
           </p>
         </div>
 
+        {crisisFlag && (
+          <div className="mb-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-md shadow">
+            <strong className="font-semibold">Crisis detected:</strong> It seems you might be going through a tough time. You're not alone.
+            <div className="mt-2">
+              <Button
+                variant="outline"
+                onClick={() => {
+                  // You could link to /emergency or open a modal
+                  toast({
+                    title: "Emergency Contact",
+                    description: "Consider reaching out to your trusted contact or calling a helpline.",
+                  })
+                }}
+              >
+                View Emergency Resources
+              </Button>
+            </div>
+          </div>
+        )}
+
         <div className="flex-1 overflow-hidden flex flex-col">
           <div className="flex-1 overflow-y-auto p-4 rounded-xl bg-white/50 dark:bg-gray-900/50 backdrop-blur-sm border">
             <div className="space-y-6 max-w-3xl mx-auto">
               {messages.map((message) => (
                 <div
                   key={message.id}
-                  className={`flex ${
-                    message.role === "user" ? "justify-end" : "justify-start"
-                  }`}
+                  className={`flex ${message.role === "user" ? "justify-end" : "justify-start"}`}
                 >
                   <div className="flex items-start gap-3 max-w-[80%]">
                     {message.role === "assistant" && (
                       <div className="relative">
                         <div className="absolute -inset-1 bg-gradient-to-r from-primary to-secondary rounded-full blur opacity-30 animate-pulse-slow"></div>
                         <Avatar className="h-10 w-10 border-2 border-white dark:border-gray-800">
-                          <AvatarImage
-                            src="/placeholder.svg?height=40&width=40"
-                            alt="AI"
-                          />
+                          <AvatarImage src="/placeholder.svg?height=40&width=40" alt="AI" />
                           <AvatarFallback className="bg-gradient-to-r from-primary to-secondary text-white">
                             AI
                           </AvatarFallback>
@@ -169,10 +188,7 @@ export default function ChatPage() {
                       <div className="relative">
                         <div className="absolute -inset-1 bg-gradient-to-r from-primary to-secondary rounded-full blur opacity-30 animate-pulse-slow"></div>
                         <Avatar className="h-10 w-10 border-2 border-white dark:border-gray-800">
-                          <AvatarImage
-                            src={user.imageUrl}
-                            alt={user.firstName || "User"}
-                          />
+                          <AvatarImage src={user.imageUrl} alt={user.firstName || "User"} />
                           <AvatarFallback className="bg-gradient-to-r from-secondary to-accent text-white">
                             {user.firstName?.[0] || "U"}
                           </AvatarFallback>

@@ -10,6 +10,7 @@ export const emergencyContacts = sqliteTable("emergency_contacts", {
   updatedAt: integer("updated_at", { mode: "timestamp" }).$defaultFn(() => new Date()),
 })
 
+
 export const messages = sqliteTable("messages", {
   id: text("id").primaryKey(),
   userId: text("user_id").notNull(),
@@ -21,6 +22,11 @@ export const messages = sqliteTable("messages", {
   updatedAt: integer("updated_at", { mode: "timestamp" }).$defaultFn(() => new Date()),
 })
 
+export const chatSessions = sqliteTable("chat_sessions", {
+  id: text("id").primaryKey(),
+  userId: text("user_id").notNull(),
+  createdAt: text("created_at").notNull(),
+});
 export const journalEntries = sqliteTable("journal_entries", {
   id: text("id").primaryKey(),
   userId: text("user_id").notNull(),

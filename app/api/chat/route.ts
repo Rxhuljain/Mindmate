@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Client } from "@gradio/client";
 import { v4 as uuidv4 } from "uuid";
-import { db } from "@/lib/db"; // ✅ Make sure your export in lib/db/index.ts is: `export { db } from './drizzle';`
+import { db } from "@/lib/db";
 import { messages } from "@/lib/db/schema";
 import { auth } from "@clerk/nextjs/server";
 
@@ -26,7 +26,7 @@ function countTriggerWords(message: string): number {
 
 export async function POST(req: NextRequest) {
   try {
-    const { userId } = await auth(); // ✅ Await the promise to access userId
+    const { userId } = await auth();
     if (!userId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
@@ -40,7 +40,6 @@ export async function POST(req: NextRequest) {
     const crisisScore = countTriggerWords(message);
     const crisisDetected = crisisScore >= TRIGGER_THRESHOLD;
 
-    // Store user message
     await db.insert(messages).values({
       id: uuidv4(),
       userId,
@@ -52,7 +51,6 @@ export async function POST(req: NextRequest) {
       updatedAt: new Date()
     });
 
-    // Get AI response
     const client = await Client.connect("https://rahulxjain11-mindmate-chatbot.hf.space/");
     const result = await client.predict("/chat", {
       message,
@@ -62,9 +60,8 @@ export async function POST(req: NextRequest) {
       top_p: 0.95,
     });
 
-    const aiReply = (result?.data as string[])[0] || "Sorry, I couldn't process your message.";
+    const aiReply = (Array.isArray(result?.data) ? result.data[0] : null) || "Sorry, I couldn't process your message.";
 
-    // Store AI reply
     await db.insert(messages).values({
       id: uuidv4(),
       userId,

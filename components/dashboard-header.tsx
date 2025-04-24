@@ -47,6 +47,8 @@ export function DashboardHeader({ }: DashboardHeaderProps) {
           </div>
         </nav>
       </div>
+      
     </header>
+    
   );
 }
